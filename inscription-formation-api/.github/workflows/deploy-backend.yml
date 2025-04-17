@@ -2,7 +2,8 @@ name: 🚀 Deploy Laravel Backend Only
 
 on:
   push:
-    branches: [main]  # ou remplace par la branche de travail
+    branches:
+      - main
 
 jobs:
   deploy:
@@ -12,6 +13,17 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
 
+      # Navigue dans le répertoire où se trouve le backend Laravel
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.0'
+
+      - name: Install Dependencies
+        run: |
+          cd inscription-formation-api  # Navigue dans le dossier backend Laravel
+          composer install --no-interaction --prefer-dist
+
       - name: Deploy Laravel Backend to FTP
         uses: SamKirkland/FTP-Deploy-Action@v4
         with:
@@ -19,4 +31,4 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           server-dir: ${{ secrets.FTP_PATH }}
-          local-dir: ./inscription-formation-api/ # indiquer à GitHub Actions d’envoyer uniquement le contenu du dossier inscription-formation-api/ via FTP.
+          local-dir: ./inscription-formation-api/  # Indique le dossier correct du backend Laravel
