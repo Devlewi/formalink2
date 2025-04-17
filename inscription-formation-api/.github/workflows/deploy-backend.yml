@@ -13,7 +13,7 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
 
-      # Navigue dans le répertoire où se trouve le backend Laravel
+      # Navigue dans le répertoire où se trouve le backend Laravel.
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
