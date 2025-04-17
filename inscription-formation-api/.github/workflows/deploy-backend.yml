@@ -22,8 +22,8 @@ jobs:
 
       # Installer les dépendances dans le sous-répertoire 'inscription-formation-api'
       - name: Install Dependencies
-        working-directory: ./  # Spécifie le répertoire où se trouve composer.json
-        run: composer install --no-interaction --prefer-dist
+        working-directory: ./inscription-formation-api  # Spécifie le répertoire où se trouve composer.json
+        run: composer install --no-interaction --prefer-dist --working-dir=inscription-formation-api
 
       # Autres étapes de déploiement (ajustes selon tes besoins)
       - name: Deploy Laravel Backend to FTP
