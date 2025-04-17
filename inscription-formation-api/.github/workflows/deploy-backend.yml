@@ -22,7 +22,7 @@ jobs:
 
       # Installer les dépendances dans le sous-répertoire 'inscription-formation-api'
       - name: Install Dependencies
-        working-directory: ./inscription-formation-api  # Spécifie le répertoire où se trouve composer.json
+        working-directory: ./  # Spécifie le répertoire où se trouve composer.json
         run: composer install --no-interaction --prefer-dist
 
       # Autres étapes de déploiement (ajustes selon tes besoins)
