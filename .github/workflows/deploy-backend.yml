@@ -10,23 +10,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout du repository
+      # Étape 1 : Récupérer le code
       - name: Checkout repo
         uses: actions/checkout@v3
 
-      # Installation de PHP
+      # Étape 2 : Installer PHP pour composer
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.0'
 
-      # Installer les dépendances dans le sous-répertoire 'inscription-formation-api'
+      # Étape 3 : Installer les dépendances Laravel
       - name: Install Dependencies
-        working-directory: ./inscription-formation-api  # Spécifie le répertoire où se trouve composer.json
-        run: ls -l ./inscription-formation-api
-        #run: composer install --no-interaction --prefer-dist
+        working-directory: ./inscription-formation-api
+        run: composer install --no-interaction --prefer-dist --optimize-autoloader
 
-      # Autres étapes de déploiement (ajustes selon tes besoins)
+      # Étape 4 : Déploiement FTP
       - name: Deploy Laravel Backend to FTP
         uses: SamKirkland/FTP-Deploy-Action@v4
         with:
