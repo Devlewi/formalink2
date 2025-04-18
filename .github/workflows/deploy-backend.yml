@@ -10,29 +10,32 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout du repository
       - name: Checkout repo
         uses: actions/checkout@v3
 
-      # Installation de PHP
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.0'
 
-      # Installer les dépendances dans le sous-répertoire 'inscription-formation-api'
-      - name: Install Dependencies
-        working-directory: ./inscription-formation-api  # Spécifie le répertoire où se trouve composer.json
-        run: composer install --no-interaction --prefer-dist
+      - name: Install Composer Dependencies
+        working-directory: ./inscription-formation-api
+        run: composer install --no-interaction --prefer-dist --optimize-autoloader
 
-        #run: ls -l ./inscription-formation-api
-
-      # Autres étapes de déploiement (ajustes selon tes besoins)
-      - name: Deploy Laravel Backend to FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4
+      - name: 📂 Deploy Laravel Backend to FTP
+        uses: SamKirkland/FTP-Deploy-Action@4.3.4
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           server-dir: ${{ secrets.FTP_PATH }}
           local-dir: ./inscription-formation-api/
+          exclude: |
+            vendor/**
+            node_modules/**
+            .env
+            .git*
+            tests/**
+            storage/logs/**
+            .github/**
+            README.md
