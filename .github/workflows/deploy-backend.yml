@@ -30,7 +30,7 @@ jobs:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          server-dir: ${{ secrets.FTP_PATH }}/api  # Deploying the backend to the /api directory
+          server-dir: ${{ secrets.FTP_PATH }}  # Deploying the backend to the /api directory
           local-dir: ./inscription-formation-api/
           exclude: |
             .env
