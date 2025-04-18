@@ -1,4 +1,4 @@
-name: 🚀 Deploy Laravel Backend Only
+name: 🚀 Deploy Laravel Backend API Only
 
 on:
   push:
@@ -23,40 +23,14 @@ jobs:
         working-directory: ./inscription-formation-api
         run: composer install --no-interaction --prefer-dist --optimize-autoloader
 
-      # Step to move 'public' folder content to root of the subdomain
-      - name: 📂 Move 'public' contents to root
-        run: |
-          # Make sure the public folder content is copied to the root of the subdomain directory
-          mkdir -p ./inscription-formation-api/public_html
-          cp -r ./inscription-formation-api/public/* ./inscription-formation-api/public_html/
-
-      # Step to deploy Laravel API to /api/
       - name: 📂 Sync Laravel backend to FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          server-dir: ${{ secrets.FTP_PATH }}   # Path to 'api' folder in subdomain
+          server-dir: ${{ secrets.FTP_PATH }}
           local-dir: ./inscription-formation-api/
-          exclude: |
-            .env
-            .git*
-            node_modules/**
-            vendor/**
-            storage/logs/**
-            tests/**
-            .github/**
-
-      # Step to deploy the content of 'public' to the root of the subdomain
-      - name: 📂 Sync 'public' to root
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-        with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          server-dir: ${{ secrets.FTP_PATH }}  # This is the root of the subdomain
-          local-dir: ./inscription-formation-api/public_html/
           exclude: |
             .env
             .git*
