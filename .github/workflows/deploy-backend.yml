@@ -1,4 +1,4 @@
-name: 🚀 Deploy Laravel Backend API Only
+name: 🚀 Deploy Laravel Backend API Only - New
 
 on:
   push:
