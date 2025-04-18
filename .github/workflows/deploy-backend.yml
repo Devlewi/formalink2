@@ -35,7 +35,6 @@ jobs:
             .env
             .git*
             node_modules/**
-            vendor/**
             storage/logs/**
             tests/**
             .github/**
