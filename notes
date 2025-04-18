@@ -1,0 +1,41 @@
+name: 🚀 Deploy Laravel Backend API Only
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  web-deploy:
+    name: 🎉 Deploy Laravel API
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🚚 Get latest code
+        uses: actions/checkout@v4
+
+      - name: 🧰 Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+
+      - name: 📦 Install Laravel dependencies
+        working-directory: ./inscription-formation-api
+        run: composer install --no-interaction --prefer-dist --optimize-autoloader
+
+      - name: 📂 Sync Laravel backend to FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          server-dir: ${{ secrets.FTP_PATH }}
+          local-dir: ./inscription-formation-api/
+          exclude: |
+            .env
+            .git*
+            node_modules/**
+            vendor/**
+            storage/logs/**
+            tests/**
+            .github/**
