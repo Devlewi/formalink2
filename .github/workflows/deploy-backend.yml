@@ -1,4 +1,4 @@
-name: 🚀 Deploy Laravel Backend API Only - New
+name: 🚀 Deploy Laravel Backend API Only
 
 on:
   push:
@@ -11,26 +11,25 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: 🚚 Get latest code
+      - name: 🚚 Récupérer le code
         uses: actions/checkout@v4
 
-      - name: 🧰 Setup PHP
+      - name: 🧰 Configurer PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.1'
 
-      - name: 📦 Install Laravel dependencies
+      - name: 📦 Installer les dépendances Laravel
         working-directory: ./inscription-formation-api
         run: composer install --no-interaction --prefer-dist --optimize-autoloader
 
-      # Step to sync Laravel backend to /api/ directory
-      - name: 📂 Sync Laravel backend to FTP (API)
+      - name: 📂 Déployer le backend Laravel dans /api
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          server-dir: ${{ secrets.FTP_PATH }}  # Deploying the backend to the /api directory
+          server-dir: ${{ secrets.FTP_PATH }} # /api/
           local-dir: ./inscription-formation-api/
           exclude: |
             .env
@@ -41,27 +40,14 @@ jobs:
             tests/**
             .github/**
 
-      # Step to copy 'public' folder content to the root of the subdomain
-      - name: 📂 Copy 'public' folder contents to the root of the subdomain
-        run: |
-          # Copy the content of the public folder to the root of the subdomain
-          mkdir -p ./inscription-formation-api/public_html
-          cp -r ./inscription-formation-api/public/* ./inscription-formation-api/public_html/
-
-      # Step to sync 'public' folder content to the root of the subdomain
-      - name: 📂 Sync 'public' to root of the subdomain
+      - name: 🧾 Déployer le contenu de public/ à la racine du sous-domaine
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          server-dir: ${{ secrets.FTP_PATH }}  # Root directory of the subdomain
-          local-dir: ./inscription-formation-api/public_html/
+          server-dir: ${{ secrets.FTP_PATH }}/../
+          local-dir: ./inscription-formation-api/public/
           exclude: |
-            .env
             .git*
-            node_modules/**
-            vendor/**
-            storage/logs/**
-            tests/**
             .github/**
